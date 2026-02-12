@@ -1,10 +1,20 @@
+# ModulesColles 
+
+[![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
+
+Un gestionnaire complet à destination des enseignants en CPGE pour les interrogations orales.
+
+## Prérequis
+
+* Une distribution de LaTeX (inclue dans le PATH)
+* Python avec les modules `numpy`, `tkinter` et `pickle`.
+* Certaines fonctionalités ne sont disponible que sous Windows (en particulier les fichiers `.bat`)
+
 ## Module de colles, mode d'emploi
 
----
 
 *Ne pas oublier de changer la ligne 86 du fichier `planchedecolle.cls` en conséquence*
 
----
 
 ### Comment créer une planche de colle?
 
@@ -99,3 +109,15 @@ python main.py
 ```
 
 L'utilisation du programme est assez explicite, il faut bien penser à rafraîchir avec le bouton prévu à cet effet à chaque changement dans les séléctions. A noter que remplir la case `Note` est facultatif. Le rapport est ensuite généré dans le dossier `R-[classe]` sous le nom `Rapport-de-colle-[date]_[Eleve]\_[Numéro_de_planche]-[Titre_de_la_planche].tex`
+
+
+© Copyright by Ruben Narwa
+
+This work is licensed under a
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
+
+[![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
+
+[cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
+[cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
+[cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
