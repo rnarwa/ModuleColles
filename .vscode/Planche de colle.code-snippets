@@ -18,7 +18,7 @@
 	"Planche de Colle": {
 		"prefix": "debutplanche",
 		"body": [
-		  "\\documentclass{planchedecolle}",
+		  "\\documentclass{../planchedecolle}",
 		  "",
 		  "\\title{${1:Chapitre}}",
 		  "\\date{${2:Programme de Colle}}",

@@ -40,7 +40,7 @@ exo = sys.argv[1:]
 texfile = open('temp.tex', 'w+')
 files = os.listdir('../Exercices/')
 
-texfile.write('\\documentclass{planchedecolle}\n\\title{Test}\n\\date{Test}\n\\begin{document}\n\n')
+texfile.write('\\documentclass{../planchedecolle}\n\\title{Test}\n\\date{Test}\n\\begin{document}\n\n')
 
 for file_name in files:
     if file_name == 'Liste des exercices.txt':

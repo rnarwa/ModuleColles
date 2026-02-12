@@ -40,7 +40,7 @@ print(type)
 texfile = open('temp.tex', 'w+')
 files = os.listdir(exedir)
 
-texfile.write('\\documentclass{planchedecolle}\n\\title{Test}\n\\date{Test}\n\\begin{document}\n\n')
+texfile.write('\\documentclass{../planchedecolle}\n\\title{Test}\n\\date{Test}\n\\begin{document}\n\n')
 
 for file in files:
     for elm in type:
