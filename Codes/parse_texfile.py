@@ -43,6 +43,7 @@ def parser(fname, keywords):
 dico = {}
 corr = []
 dico_labels = {}
+exe_counter = 0
 
 for file_name in files:
     if file_name == 'Liste des exercices.txt':
@@ -51,9 +52,12 @@ for file_name in files:
         file = open(exedir + file_name, 'r', encoding='utf-8')
         for line in file:
             line = line.replace('\n','')
-            if line == '\\begin{Exercise}':
+            if len(line) == 0 or line[0] == '%':
+                pass
+            if line.startswith('\\begin{Exercise}',0):
                 interesting_line = next(file)
                 # interesting_line = interesting_line.replace(' ', '')
+                interesting_line = interesting_line.replace(r'\t', '')
                 parse= parser(interesting_line, ['type=', 'label=', 'title='])
                 planche  = parse['type='].replace(' ', '')
                 nom_exo = parse['label='].replace(' ', '')
@@ -67,19 +71,24 @@ for file_name in files:
                 if planche not in dico.keys():
                     dico[planche] = []
                 dico[planche].append(nom_exo)
+                exe_counter += 1
                 dico_labels[nom_exo] = titre_exo
             if line  == '\\begin{Answer}':
                 interesting_line = next(file)
                 interesting_line = interesting_line.replace(' ', '')
                 interesting_line = interesting_line.replace('[', '')
+                interesting_line = interesting_line.replace(r'\t', '')
+                # try: 
                 exo_corr = parser(interesting_line, ['ref='])['ref=']
+                # except: print(interesting_line, parser(interesting_line, ['ref=']), exo_corr)
                 exo_corr = exo_corr.replace('{','')
                 exo_corr = exo_corr.replace('}','')
                 corr.append(exo_corr)
 
 text.write(r"Liste des labels d'exos triés par planche. Utiliser \selectexo{planche}{label_exo} pour inclure dans un .tex d'une planche. Utiliser exo_view.bat label_exo ou exo_view.bat -type planche pour avoir une prévisualisation des exercices voulus.")
+text.write(f'\n\nIl y a {exe_counter} exercices dont {len(corr)} corrigés.' )
 for planche in dico.keys():
-    text.write('\n\nListe des exercices pour les planches ' + planche + ':\n')
+    text.write(f'\n\nListe des {len(dico[planche])} exercices pour les planches ' + planche + ':\n')
     for exo in dico[planche]:
         if exo in corr:
             text.write(exo + ' (corrigé); ')
