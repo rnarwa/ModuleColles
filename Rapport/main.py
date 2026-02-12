@@ -1,9 +1,14 @@
+
 from gui_classes import *
 from rapport_class import *
 from rapport_generation import *
 from planche_handler import *
+import locale 
 
-liste_classe = ['Classe_1', 'Classe_2']
+locale.setlocale(locale.LC_TIME, "fr_FR")
+td = date.today()
+
+liste_classe = {'Classe_1':date.fromisocalendar(td.year,td.isocalendar().week, 1), 'Classe_2':date.fromisocalendar(td.year, td.isocalendar().week, 2)} # On interroge la classe_1 le lundi, la classe_2 le mardi. 
 liste_eleves = ['']
 planche_dd_list = ['']
 exo_dd_list = {'':''}
@@ -17,9 +22,10 @@ def update_option_menu(om:tk.OptionMenu, om_variable, option_list):
 
 def refresh():
     # try:
-    if class_opt.get() in liste_classe:
+    if class_opt.get() in liste_classe.keys():
         # print(class_opt.get() + '_liste_eleves.csv')
-        liste_eleves = np.genfromtxt(r'./Liste_eleves/' + class_opt.get() + '_liste_eleves.csv', dtype = str, delimiter=',')
+        # liste_eleves = np.genfromtxt(r'./Liste_eleves/' + class_opt.get() + '_liste_eleves.csv', dtype = 'U20', delimiter=',',converters={0:lambda x: x.decode()})
+        liste_eleves = gen_eleves(r'./Liste_eleves/' + class_opt.get() + '_liste_eleves.csv')
         # global studentDDselect 
         # studentDDselect = tk.OptionMenu(scroll_frame, student_opt, *liste_eleves)
         update_option_menu(studentDDselect, student_opt, liste_eleves)
@@ -61,8 +67,9 @@ def refresh():
     if exo_opt.get() in exo_dd_list.keys():
         exo_clear()
         global exo_list
-        exo_list = planche_semaines_list[planche_opt.get()].planches[exo_opt.get()]
-        print(exo_list)
+        global cours_list
+        exo_list,cours_list = planche_semaines_list[planche_opt.get()].planches[exo_opt.get()]
+        # print(exo_list)
         for i, exo in enumerate(exo_list):
             globals()[f'Exo_{i}_label'] = tk.Label(scroll_frame, text = exo)
             globals()[f'Exo_{i}_note_input'] = tk.Entry(scroll_frame)
@@ -91,7 +98,7 @@ def refresh():
     
 def exo_clear():
     for var in globals().keys():
-        print(var, 'note' in var)
+        # print(var, 'note' in var)
         if 'Exo_' in var:
             # print(var, globals()[var])
             globals()[var].grid_forget()
@@ -132,13 +139,15 @@ def generate_report():
     rapport = Rapport()
     rapport.student = student_opt.get()
     rapport.exercices = exo_list
+    rapport.question_cours = cours_list
     rapport.commentary = comm_input.get('1.0', 'end')
     rapport.note = note_input.get()
+    rapport.get_date(liste_classe[class_opt.get()])
     for i, exo in enumerate(exo_list):
         rapport.set_note(exo, globals()[f'Exo_{i}_note_input'].get())
 
     write_report(class_opt.get(), rapport, planche_opt.get())
-    print(rapport.__dict__)
+    # print(rapport.__dict__)
     # compile_button.grid(row= 0, column= 4)
 
     clear()
@@ -170,7 +179,7 @@ refreshButton = tk.Button(scroll_frame, text = 'Refresh', command = refresh)
 generateButton = tk.Button(scroll_frame, text = 'Generate Rapport', command = generate_report)
 compile_button = tk.Button(scroll_frame, text = 'Compile', command=compile)
 studentDDselect = tk.OptionMenu(scroll_frame, student_opt, *liste_eleves)
-classeDDselect = tk.OptionMenu(scroll_frame, class_opt, *liste_classe)
+classeDDselect = tk.OptionMenu(scroll_frame, class_opt, *liste_classe.keys())
 exoDDselect = tk.OptionMenu(scroll_frame, exo_opt, *exo_dd_list)
 plancheDDselect = tk.OptionMenu(scroll_frame, planche_opt, *planche_dd_list)
 

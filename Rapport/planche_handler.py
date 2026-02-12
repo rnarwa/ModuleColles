@@ -27,11 +27,12 @@ def gen_planches(dir_path):
         planches = {}
         planche_counter = 1
 
-        with open(dir_path+'/' + file, 'r') as read_file:
+        with open(dir_path+'/' + file, 'r',encoding='utf-8') as read_file:
             line=next(read_file)
             while '\\end{document}' not in line:
                 if '\\planche' in line:
                     liste_exo = []
+                    cours_planche = ''
                     if '[' in line:
                         name = line.split('[')[1].strip('\n').strip(']')
                     else:
@@ -42,6 +43,7 @@ def gen_planches(dir_path):
                     while ('\\planche' not in line) and ('\\pageReponses' not in line)and ('\\end{document}' not in line):
                         if '\\cours' in line:
                             liste_exo.insert(0, 'Cours')
+                            cours_planche = line
                         if '\\selectexo' in line:
                             liste_exo.append(line.split('{')[2].strip('\n').strip('}'))
                         line = next(read_file)
@@ -52,7 +54,7 @@ def gen_planches(dir_path):
                                 liste_exo[i] = dico_labels[exo]
                             except:
                                 pass
-                    planches[name]=liste_exo 
+                    planches[name]=(liste_exo,cours_planche) 
                 else:
                     line = next(read_file)
 
@@ -60,3 +62,13 @@ def gen_planches(dir_path):
 
     pickle.dump(planches_semaine, open(f'./test.pickl', 'wb+'))
     return planches_semaine
+
+def gen_eleves(csv_file_path):
+    liste_eleves=[]
+    file = open(csv_file_path, 'r', encoding='utf-8')
+    for name in file:
+        name.replace('\t', ' ').replace('\n','')
+        print(name)
+        liste_eleves.append(name)
+
+    return liste_eleves

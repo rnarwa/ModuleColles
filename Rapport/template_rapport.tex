@@ -5,6 +5,26 @@
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
 
+\makeatletter
+\newcommand{\cours}{%
+Questions de cours données: \begin{itemize}
+  \@coursi
+}
+\newcommand\stopcours
+
+\newcommand\@coursi{\@ifnextchar\stopcours{\@coursfin}{\@coursii}}
+
+\newcommand\@coursii[1]{%
+    \item[$\ast$] \rm #1 
+  \@coursi
+}
+
+\newcommand\@coursfin[1]{
+\end{itemize}
+}
+\makeatother
+
+
 \begin{document}
 
 \begin{tabular}{|c|p{7cm}p{1pt}|}
@@ -18,5 +38,10 @@
     \multicolumn{2}{|l|}{Commentaire} & \multicolumn{1}{|p{8cm}|}{PERTINENT-COMMENTAIRE}  \\
     \hline
 \end{tabular}
+
+\vspace{1cm}
+\cours{Question 1}{Question 2}\stopcours
+
+
 
 \end{document}
