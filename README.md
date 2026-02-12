@@ -91,7 +91,12 @@ exo_view.bat -type [type_exo]
 
 Avant de lancer le programme, il faut:
 
-1) Dans `main.py`, changer la ligne 6 pour inclure toute nouvelle classe à ajouter
+1) Dans `main.py`, ajouter à la ligne 6 des entrées au dictionnaire de classe, avec en clé `[classe]` et en valeur le jour où l'on colle la classe, comme suit
+
+```python
+'Classe_1':date.fromisocalendar(td.year,td.isocalendar().week, [jour_de_la_semaine])
+```
+
 2) Dans le dossier `Liste_Eleves`, créer une liste des eleves par classe dans un fichier `[classe]_liste_eleves.csv`
 3) Dans le dossier `P-[classe]`, créer les planches données dans l'année sous le nom `[Numéro_de_planche]-[Titre_de_la_planche].tex` dans le format précisé ci-dessus
 4) Dans l'invite de commande, utiliser la commande
@@ -104,7 +109,7 @@ python parse_texfile.py
 5) Lancer le programme avec
 
 ```bash
-cd ../Rapport
+cd ../Rapport #c'est important de se placer dans le dossier Rapport.
 python main.py
 ```
 
